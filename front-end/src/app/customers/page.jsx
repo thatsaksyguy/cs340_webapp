@@ -1,123 +1,236 @@
+"use client";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
 function CustomersPage() {
-    const customerData = [
-      {
-        customerID: 1,
-        name: "Hermione Granger",
-        email: "hergranger@hogwarts.com",
-        address: "123 Godric's Hollow St.",
-        phone: "222-222-2222",
-      },
-      {
-        customerID: 2,
-        name: "Draco Malfoy",
-        email: "dmalfoy@deatheater.com",
-        address: "456 Malfoy Rd.",
-        phone: "111-111-1111",
-      },
-    ];
+  const [customers, setCustomers] = useState([{
+    customerID: "",
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
+  }]);
+  const [addName, setAddName] = useState("");
+  const [addEmail, setAddEmail] = useState("");
+  const [addAddress, setAddAddress] = useState("");
+  const [addPhone, setAddPhone] = useState("");
 
-    return (
-      <div>
-        <h1>Customers</h1>
-        <h2>Browse Customers</h2>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>
-                <button>New</button>
-              </th>
-              <th></th>
-              <th>Customer ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Address</th>
-              <th>Phone</th>
+  const [updateCustomerID, setUpdateCustomerID] = useState("");
+  const [updateName, setUpdateName] = useState("");
+  const [updateEmail, setUpdateEmail] = useState("");
+  const [updateAddress, setUpdateAddress] = useState("");
+  const [updatePhone, setUpdatePhone] = useState("");
+
+  const [deleteCustomerID, setDeleteCustomerID] = useState("");
+
+  useEffect(() => {
+    getCustomers().then((data) => setCustomers(data));
+  }, [])
+
+  const getCustomers = async () => {
+    // const response = await axios.get("api url");
+    // return response.data;
+    return customers
+  };
+  
+  const addCustomer = async () => {
+    // const response = await axios.post("api url", {
+    //   name: addName,
+    //   email: addEmail,
+    //   address: addAddress,
+    //   phone: addPhone,
+    // });
+
+    getCustomers().then((data) => setCustomers(data));
+
+    setAddName("");
+    setAddEmail("");
+    setAddAddress("");
+    setAddPhone("");
+  };
+
+  const updateCustomer = async () => {
+    // const response = await axios.put("api url", {
+    //   customerID: updateCustomerID,
+    //   name: updateName,
+    //   email: updateEmail,
+    //   address: updateAddress,
+    //   phone: updatePhone,
+    // });
+
+    getCustomers().then((data) => setCustomers(data));
+
+    setUpdateCustomerID("");
+    setUpdateName("");
+    setUpdateEmail("");
+    setUpdateAddress("");
+    setUpdatePhone("");
+  };
+
+  const deleteCustomer = async () => {
+    // const response = await axios.delete("api url", {
+    //   data: { customerID: deleteCustomerID },
+    // });
+    getCustomers().then((data) => setCustomers(data));
+
+    setDeleteCustomerID("");
+  };
+
+  return (
+    <div>
+      <h1>Customers</h1>
+      <h2>Browse Customers</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {customers.map((customer) => (
+            <tr key={customer.customerID}>
+              <td>{customer.customerID}</td>
+              <td>{customer.name}</td>
+              <td>{customer.email}</td>
+              <td>{customer.address}</td>
+              <td>{customer.phone}</td>
             </tr>
-          </thead>
-          <tbody>
-            {customerData.map((customer) => (
-              <tr key={customer.customerID}>
-                <td>
-                  <button>Edit</button>
-                </td>
-                <td>
-                  <button>Delete</button>
-                </td>
-                <td>{customer.customerID}</td>
-                <td>{customer.name}</td>
-                <td>{customer.email}</td>
-                <td>{customer.address}</td>
-                <td>{customer.phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
 
-        <div className="form-group">
-        <form>
+      <div className="form-group">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addCustomer();
+          }}
+        >
           <h2>Add Customer</h2>
-          <label htmlFor="customerID">Customer ID: </label>
-          <input type="text" id="id" name="id" required />
-          <> </>
           <label htmlFor="name">Name: </label>
-          <input type="text" id="name" name="name" required />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={addName}
+            onChange={(e) => setAddName(e.target.value)}
+            required
+          />
           <> </>
           <label htmlFor="email">Email: </label>
-          <input type="email" id="email" name="email" placeholder="Leave blank if N/A" />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={addEmail}
+            onChange={(e) => setAddEmail(e.target.value)}
+            placeholder="Leave blank if N/A"
+          />
           <> </>
           <label htmlFor="address">Address: </label>
-          <input type="text" id="address" name="address" placeholder="Leave blank if N/A" />
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={addAddress}
+            onChange={(e) => setAddAddress(e.target.value)}
+            placeholder="Leave blank if N/A"
+          />
           <> </>
           <label htmlFor="phone">Phone: </label>
-          <input type="text" id="phone" name="phone" required />
-
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={addPhone}
+            onChange={(e) => setAddPhone(e.target.value)}
+            required
+          />
           <button type="submit">Add</button>
         </form>
 
-        <form>
-        <h2>Update Customer</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateCustomer();
+          }}
+        >
+          <h2>Update Customer</h2>
           <label htmlFor="customerID">Customer ID: </label>
-          <input type="text" id="id" name="id"  />
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={updateCustomerID}
+            onChange={(e) => setUpdateCustomerID(e.target.value)}
+          />
           <> </>
           <label htmlFor="name">Name: </label>
-          <input type="text" id="name" name="name"  />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={updateName}
+            onChange={(e) => setUpdateName(e.target.value)}
+          />
           <> </>
           <label htmlFor="email">Email: </label>
-          <input type="email" id="email" name="email"  />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={updateEmail}
+            onChange={(e) => setUpdateEmail(e.target.value)}
+          />
           <> </>
           <label htmlFor="address">Address: </label>
-          <input type="text" id="address" name="address" />
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={updateAddress}
+            onChange={(e) => setUpdateAddress(e.target.value)}
+          />
           <> </>
           <label htmlFor="phone">Phone: </label>
-          <input type="text" id="phone" name="phone" />
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={updatePhone}
+            onChange={(e) => setUpdatePhone(e.target.value)}
+          />
 
           <button type="submit">Update</button>
         </form>
 
-
-        <form>
-        <h2>Delete Customer</h2>
-        <label htmlFor="customerID">Customer ID: </label>
-          <input type="text" id="id" name="id"  />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            deleteCustomer();
+          }}
+        >
+          <h2>Delete Customer</h2>
+          <label htmlFor="customerID">Customer ID: </label>
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={deleteCustomerID}
+            onChange={(e) => setDeleteCustomerID(e.target.value)}
+          />
           <> </>
-          <label htmlFor="name">Name: </label>
-          <input type="text" id="name" name="name"  />
-          <> </>
-          <label htmlFor="email">Email: </label>
-          <input type="email" id="email" name="email" />
-          <> </>
-          <label htmlFor="address">Address: </label>
-          <input type="text" id="address" name="address" />
-          <> </>
-          <label htmlFor="phone">Phone: </label>
-          <input type="text" id="phone" name="phone" />
-
           <button>Delete</button>
           <> </>
         </form>
-        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  export default CustomersPage;
+export default CustomersPage;
