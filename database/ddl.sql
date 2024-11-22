@@ -89,7 +89,7 @@ VALUES
 
 -- ORDERS
 -- CUSTOMERID VALUES ADDED
-INSERT INTO Orders (customerID, orderDate, totalPrice, )
+INSERT INTO Orders (customerID, orderDate, totalPrice)
 VALUES 
 (1, CURDATE(), 200.00),
 (2, CURDATE(), 275.00),
