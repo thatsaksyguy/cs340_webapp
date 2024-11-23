@@ -1,11 +1,11 @@
 /**
  * Citation for the db-connector code structure
- * 
+ *
  * Date: 11/21/2024
- * 
+ *
  * Adapted from CS 340 nodejs-starter-app, step 1.
- * Values in the pool have been modified to use Jonathan's mysql database credentials.
- * 
+ * Values in the pool have been modified to use Destiny's mysql database credentials.
+ *
  * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
  */
 
@@ -16,9 +16,9 @@ var mysql = require('mysql')
 var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'classmysql.engr.oregonstate.edu',
-    user            : 'cs340_saksj',
-    password        : 'databased4r',
-    database        : 'cs340_saksj'
+    user            : 'cs340_brighdes',
+    password        : '2732',
+    database        : 'cs340_brighdes'
 })
 
 // Export it for use in our applicaiton
