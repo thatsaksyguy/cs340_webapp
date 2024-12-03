@@ -1,0 +1,90 @@
+<!--
+ * Citation for the index.hbs code structure.
+ *
+ * Date: 11/22/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 3.
+ * Queries and function structure copied from example in app.js starter code.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ -->
+<link rel="stylesheet" href="css/styles.css">
+
+<h1>SPELLS</h1>
+
+<!-- Create a table -->
+<table id="Spells-table">
+    <!-- Header section -->
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>{{@key}}</th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <!-- Body section -->
+    <tbody>
+        {{#each data}}
+        <tr data-value="{{this.spellID}}">
+            <td>{{this.spellID}}</td>
+            <td>{{this.level}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.typeOfSpell}}</td>
+            <td>{{this.totalSpellQuantity}}</td>
+            <td><button onclick="deleteSpell({{this.spellID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_spell.js"></script>
+
+<h2>Search Spells</h2>
+<p>Search by typeOfSpell using the field below.</p>
+<form id="search-spell-html" method="GET" action="/spells">
+    <label for="input-typeOfSpell">Search by Type of Spell: </label>
+    <input type="text" name="typeOfSpell" id="input-typeOfSpell-html-search">
+    <button type="submit">Submit</button>
+    <br>
+    <a href="/spells"><button type="button">Reset</button></a>
+</form>
+
+<!-- Form to add a record to the table -->
+<h2>Add a Spell</h2>
+<p>To add a new spell, please enter the information below and click 'Submit'!</p>
+<form id="add-spell-form-ajax">
+    <label for="input-level">Level: </label>
+    <input type="text" id="input-level" name="level" required>
+
+    <label for="input-price">Price: </label>
+    <input type="number" id="input-price" name="price" required>
+
+    <label for="input-typeOfSpell">Type of Spell: </label>
+    <input type="text" id="input-typeOfSpell" name="typeOfSpell" required>
+
+    <label for="input-totalSpellQuantity">Total Spell Quantity: </label>
+    <input type="number" id="input-totalSpellQuantity" name="totalSpellQuantity" required>
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/add_spell.js"></script>
+
+<h2>Update a Spell</h2>
+<p>To update a specific spell's type or quantity, please select the spell and provide the new values.</p>
+<form id="update-spell-form-ajax">
+
+    <label for="update-level">Level: </label>
+    <input type="text" name="level" id="input-level-update">
+
+    <label for="update-price">Price: </label>
+    <input type="number" name="price" id="input-price-update">
+
+    <label for="update-typeOfSpell">Type of Spell: </label>
+    <input type="text" name="typeOfSpell" id="input-typeOfSpell-update">
+
+    <label for="update-totalSpellQuantity">Total Spell Quantity: </label>
+    <input type="number" name="totalSpellQuantity" id="input-totalSpellQuantity-update">
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/update_spell.js"></script>

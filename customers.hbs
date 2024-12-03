@@ -1,0 +1,111 @@
+<!--
+ * Citation for the index.hbs code structure.
+ *
+ * Date: 11/22/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 3.
+ * Queries and function structure copied from example in app.js starter code.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ */ -->
+<link rel="stylesheet" href="css/styles.css">
+
+ <h1>CUSTOMERS</h1>
+
+{{!-- Create a table --}}
+<table id ="customers-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{#each data}}
+        <tr data-value="{{this.customerID}}">
+            <td>{{this.customerID}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.address}}</td>
+            <td><button onclick="deleteCustomer({{this.customerID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_customer.js"></script>
+
+<h2>Search Customers</h2>
+<p>Search by Email using the field below.</p>
+<form id="search-email-html" method='GET' action='/customers'>
+    <label for="input-email">Search by Email: </label>
+    <input type="text" name="email" id="input-email-html-search">
+
+    <button type="submit">Submit</button>
+    <br>
+    <a href='/'><button>Reset</button></a>
+</form>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add a Customer</h2>
+<p>To add a new customer, please enter the information below and click 'Submit'!</p>
+<form id="add-customer-form-ajax">
+    <label for="input-name">Name: </label>
+    <input type="text" id="input-name" name="input-name" required>
+
+    <label for="input-email">Email: </label>
+    <input type="text" id="input-email" name="input-email" required>
+
+
+    <label for="input-phone">Phone: </label>
+    <input type="text" id="input-phone" name="input-phone" required>
+
+    <label for="input-address">Address: </label>
+    <input type="text" id="input-address" name="input-address" required>
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/add_customer.js"></script>
+
+<h2>Update a Customer</h2>
+<p>To update a specific customer's core</p>
+<form id="update-customer-form-ajax">
+
+    <label for="input-customerID">Customer ID: </label>
+    <select name="input-customerID" id="mySelect">
+        <option value="test">Select a Customer</option>
+        {{#each data}}
+        <option value="{{this.customerID}}">{{this.customerID}}</option>
+        {{/each}}
+    </select>
+
+    <label for="update-name">Name: </label>
+    <input type="text" id="update-name" name="update-name" required>
+
+    <label for="input-email">Email: </label>
+    <input type="text" id="update-email" name="update-email" required>
+
+
+    <label for="input-phone">Phone: </label>
+    <input type="text" id="update-phone" name="update-phone" required>
+
+    <label for="input-address">Address: </label>
+    <input type="text" id="update-address" name="update-address" required>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<script src="./js/update_customer.js"></script>

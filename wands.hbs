@@ -1,0 +1,115 @@
+<!--
+ * Citation for the index.hbs code structure.
+ *
+ * Date: 11/22/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 3.
+ * Queries and function structure copied from example in app.js starter code.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ */ -->
+<link rel="stylesheet" href="css/styles.css">
+
+ <h1>WANDS</h1>
+
+{{!-- Create a table --}}
+<table id ="wands-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr data-value="{{this.wandID}}">
+            <td>{{this.wandID}}</td>
+            <td>{{this.length}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.core}}</td>
+            <td>{{this.wood}}</td>
+            <td>{{this.totalWandQuantity}}</td>
+            <td><button onclick="deleteWand({{this.wandID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_wand.js"></script>
+
+<h2>Search Wands</h2>
+<p>Search by Wood using the field below.</p>
+<form id="search-wand-html" method='GET' action='/'>
+    <label for="input-wood">Search by Wood: </label>
+    <input type="text" name="wood" id="input-wood-html-search">
+
+    <button type="submit">Submit</button>
+    <br>
+    <a href='/'><button>Reset</button></a>
+</form>
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add a Wand</h2>
+<p>To add a new wand, please enter the information below and click 'Submit'!</p>
+<form id="add-wand-form-ajax">
+    <label for="input-length">Length: </label>
+    <input type="number" id="input-length" name="input-length" step="0.5" required>
+
+    <label for="input-price">Price: </label>
+    <input type="number" id="input-price" name="input-price" required>
+
+    <label for="input-core">Core: </label>
+    <select id="input-core" name="input-core" required>
+        <option value="test">Select a Core Type</option>
+        {{#each core}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-wood">Wood: </label>
+    <input type="text" id="input-wood" name="input-wood" required>
+
+    <label for="input-totalWandQuantity">Total Wand Quantity: </label>
+    <input type="number" id="input-totalWandQuantity" name="input-totalWandQuantity" required>
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/add_wand.js"></script>
+
+<h2>Update a Wand</h2>
+<p>To update a specific wand's core</p>
+<form id="update-wand-form-ajax">
+
+    <label for="input-wandID">Wand ID: </label>
+    <select name="input-wandID" id="mySelect">
+        <option value="test">Select a Wand</option>
+        {{#each data}}
+        <option value="{{this.wandID}}">{{this.wandID}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-core">Core: </label>
+    <select name="input-core" id="input-core-update">
+    <option value="test">Select a Core Type</option>
+    {{#each core}}
+        <option value="{{this}}">{{this}}</option>
+    {{/each}}
+</select>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<script src="./js/update_wand.js"></script>
