@@ -508,7 +508,7 @@ app.put("/put-order-ajax", function (req, res, next) {
     );
 });
 
-app.get("/orderItems", function (req, res) {
+app.get("/order-items", function (req, res) {
     // Declare Query 1
     let query1;
 
