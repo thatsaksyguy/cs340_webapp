@@ -184,7 +184,6 @@ app.get("/customers", function (req, res) {
     // If there is a query string, we assume this is a search, and return desired results
     else {
         query1 = `SELECT * FROM Customers WHERE email LIKE "${req.query.email}%"`;
-
     }
 
     // Run the 1st query
@@ -299,13 +298,13 @@ app.get("/spells", function (req, res) {
     ];
 
     // If there is no query string, we just perform a basic SELECT
-    if (req.query.wood === undefined) {
+    if (req.query.typeOfSpell === undefined) {
         query1 = "SELECT * FROM `Spells`;";
     }
 
     // If there is a query string, we assume this is a search, and return desired results
     else {
-        query1 = `SELECT * FROM Spells"`;
+        query1 = `SELECT * FROM Spells WHERE typeOfSpell LIKE "${req.query.typeOfSpell}%"`;
     }
 
     // Run the 1st query

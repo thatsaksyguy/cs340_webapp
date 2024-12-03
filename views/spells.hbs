@@ -72,18 +72,25 @@
 <h2>Update a Spell</h2>
 <p>To update a specific spell's type or quantity, please select the spell and provide the new values.</p>
 <form id="update-spell-form-ajax">
+    <label for="input-spellID">Spell ID: </label>
+    <select name="spellID" id="mySelect">
+        <option value="" disabled selected>Select a Spell</option>
+        {{#each data}}
+        <option value="{{this.spellID}}">{{this.spellID}}</option>
+        {{/each}}
+    </select>
 
     <label for="update-level">Level: </label>
-    <input type="text" name="level" id="input-level-update">
+    <input type="text" name="level" id="update-level">
 
     <label for="update-price">Price: </label>
-    <input type="number" name="price" id="input-price-update">
+    <input type="number" name="price" id="update-price">
 
     <label for="update-typeOfSpell">Type of Spell: </label>
-    <input type="text" name="typeOfSpell" id="input-typeOfSpell-update">
+    <input type="text" name="typeOfSpell" id="update-typeOfSpell">
 
     <label for="update-totalSpellQuantity">Total Spell Quantity: </label>
-    <input type="number" name="totalSpellQuantity" id="input-totalSpellQuantity-update">
+    <input type="number" name="totalSpellQuantity" id="update-totalSpellQuantity">
 
     <button type="submit">Submit</button>
 </form>

@@ -1,92 +1,81 @@
-
 // Get the objects we need to modify
-let updateCustomerForm = document.getElementById('update-customer-form-ajax');
+let updateSpellForm = document.getElementById('update-spell-form-ajax');
 
 // Modify the objects we need
-updateCustomerForm.addEventListener("submit", function (e) {
-
+updateSpellForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerID = document.getElementById("mySelect");
-    let inputName = document.getElementById("update-name");
-    let inputEmail = document.getElementById("update-email");
-    let inputPhone = document.getElementById("update-phone");
-    let inputAddress = document.getElementById("update-address");
+    let inputSpellID = document.getElementById("mySelect");
+    let inputLevel = document.getElementById("update-level");
+    let inputPrice = document.getElementById("update-price");
+    let inputTypeOfSpell = document.getElementById("update-typeOfSpell");
+    let inputTotalSpellQuantity = document.getElementById("update-totalSpellQuantity");
 
     // Get the values from the form fields
-    let customerIDValue = inputCustomerID.value;
-    let nameValue = inputName.value;
-    let emailValue = inputEmail.value;
-    let phoneValue = inputPhone.value;
-    let addressValue = inputAddress.value;
+    let spellIDValue = inputSpellID.value;
+    let levelValue = inputLevel.value;
+    let priceValue = parseFloat(inputPrice.value);
+    let typeOfSpellValue = inputTypeOfSpell.value;
+    let totalSpellQuantityValue = parseInt(inputTotalSpellQuantity.value);
 
-    // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
-
-
-    // Put our data we want to send in a javascript object
+    // Put our data we want to send in a JavaScript object
     let data = {
-        customerID: customerIDValue,
-        name: nameValue,
-        email: emailValue,
-        phone: phoneValue,
-        address: addressValue,
-    }
+        spellID: spellIDValue,
+        level: levelValue,
+        price: priceValue,
+        typeOfSpell: typeOfSpellValue,
+        totalSpellQuantity: totalSpellQuantityValue,
+    };
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/put-customer-ajax", true);
+    xhttp.open("PUT", "/put-spell-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    // Tell our AJAX request how to resolve
+    // Define how the AJAX request resolves
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
+            // Update the row in the table
+            updateRow(xhttp.response, spellIDValue);
 
-            // Add the new data to the table
-            updateRow(xhttp.response, customerIDValue);
-
-            inputName.value = '';
-            inputEmail.value = '';
-            inputPhone.value = '';
-            inputAddress.value = '';
-
+            // Clear the input fields for another update
+            inputLevel.value = '';
+            inputPrice.value = '';
+            inputTypeOfSpell.value = '';
+            inputTotalSpellQuantity.value = '';
+        } else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log("There was an error with the input.");
         }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
-            console.log("There was an error with the input.")
-        }
-    }
+    };
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
+});
 
-})
-
-
-function updateRow(data, customerID){
+// Function to update a row in the table
+function updateRow(data, spellID) {
     let parsedData = JSON.parse(data);
 
-    let table = document.getElementById("customers-table");
+    let table = document.getElementById("Spells-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == customerID) {
-
-            // Get the location of the row where we found the matching person ID
+        // Iterate through rows
+        // Rows would be accessed using the "row" variable assigned in the for loop
+        if (table.rows[i].getAttribute("data-value") == spellID) {
+            // Get the location of the row where we found the matching spell ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
+            // Get the <td> elements in the row
             let tds = updateRowIndex.getElementsByTagName("td");
-            
+
             // Update all fields
-            tds[0].innerHTML = parsedData[0].customerID;
-            tds[1].innerHTML = parsedData[0].name;
-            tds[2].innerHTML = parsedData[0].email;
-            tds[3].innerHTML = parsedData[0].phone;
-            tds[4].innerHTML = parsedData[0].address;
-            
-       }
+            tds[0].innerHTML = parsedData[0].spellID;
+            tds[1].innerHTML = parsedData[0].level;
+            tds[2].innerHTML = parsedData[0].price;
+            tds[3].innerHTML = parsedData[0].typeOfSpell;
+            tds[4].innerHTML = parsedData[0].totalSpellQuantity;
+        }
     }
 }
