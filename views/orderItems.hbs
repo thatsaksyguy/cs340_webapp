@@ -1,0 +1,107 @@
+<!--
+ * Citation for the index.hbs code structure.
+ *
+ * Date: 12/2/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 3.
+ * Queries and function structure copied from example in app.js starter code.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ -->
+
+ <link rel="stylesheet" href="css/styles.css">
+
+<h1>ORDER ITEMS</h1>
+
+<!-- Create a table -->
+<table id="OrderItems-table">
+    <!-- Header section -->
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>{{@key}}</th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <!-- Body section -->
+    <tbody>
+        {{#each data}}
+        <tr data-value="{{this.orderItemID}}">
+            <td>{{this.orderID}}</td>
+            <td>{{this.wandID}}</td>
+            <td>{{this.spellID}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.price}}</td>
+            <td><button onclick="deleteOrderItem({{this.orderItemID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_orderItem.js"></script>
+
+<h2>Search Order Items</h2>
+<p>Search by orderItemID using the field below.</p>
+<form id="search-orderItem-html" method="GET" action="/orderItems">
+    <label for="input-orderItemID">Search by Order Item ID: </label>
+    <input type="text" name="orderItemID" id="input-orderItemID-html-search">
+    <button type="submit">Submit</button>
+    <br>
+    <a href="/orderItems"><button type="button">Reset</button></a>
+</form>
+
+<!-- Form to add a record to the table -->
+<h2>Add an Order Item</h2>
+<p>To add a new order item, please enter the information below and click 'Submit'!</p>
+<form id="add-orderItem-form-ajax">
+    <label for="input-orderItemID">Order Item ID: </label>
+    <input type="text" id="input-orderItemID" name="orderItemID" required>
+
+    <label for="input-orderID">Order ID: </label>
+    <input type="number" id="input-orderID" name="orderID" required>
+
+    <label for="input-wandID">Wand ID: </label>
+    <input type="text" id="input-wandID" name="wandID">
+
+    <label for="input-spellID">Spell ID: </label>
+    <input type="number" id="input-spellID" name="spellID">
+
+    <label for="input-quantity">Quantity: </label>
+    <input type="number" id="input-quantity" name="quantity" required>
+
+    <label for="input-price">Price: </label>
+    <input type="number" id="input-price" name="price" required>
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/add_orderItem.js"></script>
+
+<h2>Update an Order Item</h2>
+<p>To update an order item, please select the Order Item ID and provide the new values.</p>
+<form id="update-orderItem-form-ajax">
+    <label for="input-orderItemID">Order Item ID: </label>
+    <select name="orderItemID" id="mySelect">
+        <option value="" disabled selected>Select an Order Item</option>
+        {{#each data}}
+        <option value="{{this.orderItemID}}">{{this.orderItemID}}</option>
+        {{/each}}
+    </select>
+
+    <label for="update-orderID">Order ID: </label>
+    <input type="text" name="orderID" id="update-orderID">
+
+    <label for="update-wandID">Wand ID: </label>
+    <input type="number" name="wandID" id="update-wandID">
+
+    <label for="update-spellID">Spell ID: </label>
+    <input type="text" name="spellID" id="update-spellID">
+
+    <label for="update-quantity">Quantity: </label>
+    <input type="text" name="quantity" id="update-quantity">
+
+    <label for="update-price">Price: </label>
+    <input type="text" name="price" id="update-price">
+
+    <button type="submit">Submit</button>
+</form>
+<script src="./js/update_orderItem.js"></script>

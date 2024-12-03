@@ -394,6 +394,237 @@ app.put("/put-spell-ajax", function (req, res) {
     );
 });
 
+
+app.get("/orders", function (req, res) {
+    // Declare Query 1
+    let query1;
+
+    // If there is no query string, we just perform a basic SELECT
+    if (req.query.orderID === undefined) {
+        query1 = "SELECT * FROM `Orders`;";
+    }
+
+    // If there is a query string, we assume this is a search, and return desired results
+    else {
+        query1 = `SELECT * FROM Customers WHERE orderID LIKE "${req.query.orderID}%"`;
+    }
+
+    // Run the 1st query
+    db.pool.query(query1, function (error, rows, fields) {
+        return res.render("orders", { data: rows });
+    });
+});
+
+app.post("/add-order-ajax", function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Orders (orderDate, customerID, totalPrice) VALUES ('${data.orderDate}', '${data.customerID}', '${data.totalPrice}')`;
+    db.pool.query(query1, function (error, rows, fields) {
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+        else {
+            query2 = `SELECT * FROM Orders;`;
+            db.pool.query(query2, function (error, rows, fields) {
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.delete("/delete-order-ajax/", function (req, res, next) {
+    let data = req.body;
+    let orderID = parseInt(data.orderID);
+    let deleteOrders = `DELETE FROM Orders WHERE orderID = ?`;
+
+    // Run the 1st query
+    db.pool.query(deleteOrders, [orderID], function (error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.put("/put-order-ajax", function (req, res, next) {
+    let data = req.body;
+
+    let orderDate = data.orderDate;
+    let customerID = data.customerID;
+    let totalPrice = data.totalPrice;
+    let orderID = parseInt(data.orderID);
+
+    let queryUpdateOrder = `UPDATE Orders 
+                              SET orderDate = ?, 
+                                  customerID = ?, 
+                                  totalPrice = ?, 
+                              WHERE orderID = ?`;
+
+    let selectOrder = `SELECT * FROM Orders WHERE orderID = ?`;
+    // Run the 1st query
+    db.pool.query(
+        queryUpdateOrder,
+        [orderDate, customerID, totalPrice, orderID],
+        function (error, rows, fields) {
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+
+            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // table on the front-end
+            else {
+                // Run the second query
+                db.pool.query(selectOrder, [orderID], function (error, rows, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.send(rows);
+                    }
+                });
+            }
+        }
+    );
+});
+
+app.get("/orderItems", function (req, res) {
+    // Declare Query 1
+    let query1;
+
+    // If there is no query string, we just perform a basic SELECT
+    if (req.query.orderItemID === undefined) {
+        query1 = "SELECT * FROM `OrderItems`;";
+    }
+
+    // If there is a query string, we assume this is a search, and return desired results
+    else {
+        query1 = `SELECT * FROM OrderItems WHERE orderItemID LIKE "${req.query.orderItemID}%"`;
+    }
+
+    // Run the 1st query
+    db.pool.query(query1, function (error, rows, fields) {
+        return res.render("orderItems", { data: rows });
+    });
+});
+
+app.post("/add-orderItem-ajax", function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO OrderItems (orderID, wandID, spellID, quantity, price) VALUES ('${data.orderID}', '${data.wandID}', '${data.spellID}', '${data.quantity}', '${data.price}')`;
+    db.pool.query(query1, function (error, rows, fields) {
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+        else {
+            query2 = `SELECT * FROM OrderItems;`;
+            db.pool.query(query2, function (error, rows, fields) {
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.delete("/delete-orderItem-ajax/", function (req, res, next) {
+    let data = req.body;
+    let orderItemID = parseInt(data.orderItemID);
+    let deleteOrderItems = `DELETE FROM OrderItems WHERE orderItemID = ?`;
+
+    // Run the 1st query
+    db.pool.query(deleteOrderItems, [orderItemID], function (error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.put("/put-orderItem-ajax", function (req, res, next) {
+    let data = req.body;
+
+    let orderID = data.orderID;
+    let wandID = data.wandID;
+    let spellID = data.spellID;
+    let quantity = data.quantity;
+    let price = data.price;
+    let orderItemID = parseInt(data.orderItemID);
+
+    let queryUpdateOrderItem = `UPDATE OrderItems 
+                              SET orderID = ?, 
+                                  wandID = ?, 
+                                  spellID = ?, 
+                                  quantity = ?,
+                                  price = ?
+                              WHERE orderItemID = ?`;
+
+    let selectOrderItem = `SELECT * FROM OrderItems WHERE orderItemID = ?`;
+    // Run the 1st query
+    db.pool.query(
+        queryUpdateOrderItem,
+        [orderID, wandID, spellID, quantity, price, orderItemID],
+        function (error, rows, fields) {
+            if (error) {
+                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error);
+                res.sendStatus(400);
+            }
+
+            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // table on the front-end
+            else {
+                // Run the second query
+                db.pool.query(selectOrderItem, [orderItemID], function (error, rows, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.send(rows);
+                    }
+                });
+            }
+        }
+    );
+});
+
 /*
     LISTENER
 */
