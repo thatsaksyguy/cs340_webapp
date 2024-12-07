@@ -11,7 +11,7 @@
 
  <link rel="stylesheet" href="css/styles.css">
 
-<h1>ORDER ITEMS</h1>
+<h1>Order Items</h1>
 
 <!-- Create a table -->
 <table id="OrderItems-table">
@@ -28,6 +28,7 @@
     <tbody>
         {{#each data}}
         <tr data-value="{{this.orderItemID}}">
+            <td>{{this.orderItemID}}</td>
             <td>{{this.orderID}}</td>
             <td>{{this.wandID}}</td>
             <td>{{this.spellID}}</td>
@@ -40,17 +41,13 @@
 </table>
 <script src="./js/delete_orderItem.js"></script>
 
-<h2>Search Order Items</h2>
-<p>Search by orderItemID using the field below.</p>
-<form id="search-orderItem-html" method="GET" action="/orderItems">
-    <label for="input-orderItemID">Search by Order Item ID: </label>
-    <input type="text" name="orderItemID" id="input-orderItemID-html-search">
-    <button type="submit">Submit</button>
-    <br>
-    <a href="/orderItems"><button type="button">Reset</button></a>
-</form>
+<div class="button-container">
+    <button id="show-add">Add a Customer</button>
+    <button id="show-update">Update a Customer</button>
+</div>
 
-<!-- Form to add a record to the table -->
+<div id="add-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Add an Order Item</h2>
 <p>To add a new order item, please enter the information below and click 'Submit'!</p>
 <form id="add-orderItem-form-ajax">
@@ -72,10 +69,18 @@
     <label for="input-price">Price: </label>
     <input type="number" id="input-price" name="price" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-add-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/add_orderItem.js"></script>
 
+<div id="update-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Update an Order Item</h2>
 <p>To update an order item, please select the Order Item ID and provide the new values.</p>
 <form id="update-orderItem-form-ajax">
@@ -102,6 +107,14 @@
     <label for="update-price">Price: </label>
     <input type="text" name="price" id="update-price">
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-update-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/update_orderItem.js"></script>
+<script src="./js/add.js"></script>
+<script src="./js/edit.js"></script>

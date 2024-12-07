@@ -10,7 +10,7 @@
  */ -->
 <link rel="stylesheet" href="css/styles.css">
 
- <h1>CUSTOMERS</h1>
+ <h1>Customers</h1>
 
 {{!-- Create a table --}}
 <table id ="customers-table">
@@ -47,10 +47,15 @@
 </table>
 <script src="./js/delete_customer.js"></script>
 
+<div class="button-container">
+    <button id="show-add">Add a Customer</button>
+    <button id="show-update">Update a Customer</button>
+</div>
+
 <h2>Search Customers</h2>
-<p>Search by Email using the field below.</p>
+<p>Search by customer name using the field below.</p>
 <form id="search-email-html" method='GET' action='/customers'>
-    <label for="input-email">Search by Email: </label>
+    <label for="input-email">Search by Customer Name: </label>
     <input type="text" name="email" id="input-email-html-search">
 
     <button type="submit">Submit</button>
@@ -58,7 +63,8 @@
     <a href='/'><button>Reset</button></a>
 </form>
 
-{{!-- Form to add a record to the table  --}}
+<div id="add-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Add a Customer</h2>
 <p>To add a new customer, please enter the information below and click 'Submit'!</p>
 <form id="add-customer-form-ajax">
@@ -75,10 +81,18 @@
     <label for="input-address">Address: </label>
     <input type="text" id="input-address" name="input-address" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-add-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/add_customer.js"></script>
 
+<div id="update-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Update a Customer</h2>
 <p>To update a specific customer's core</p>
 <form id="update-customer-form-ajax">
@@ -104,8 +118,15 @@
     <label for="input-address">Address: </label>
     <input type="text" id="update-address" name="update-address" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-update-overlay">Cancel</button>
+    </div>
 
 </form>
+</div>
+</div>
 
 <script src="./js/update_customer.js"></script>
+<script src="./js/add.js"></script>
+<script src="./js/edit.js"></script>

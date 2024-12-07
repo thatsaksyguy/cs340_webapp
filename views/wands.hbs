@@ -10,7 +10,7 @@
  */ -->
 <link rel="stylesheet" href="css/styles.css">
 
- <h1>WANDS</h1>
+ <h1>Wands</h1>
 
 {{!-- Create a table --}}
 <table id ="wands-table">
@@ -26,7 +26,7 @@
                 {{@key}}
             </th>
             {{/each}}
-            <th>Delete</th>
+            <th>Actions</th>
         </tr>
     </thead>
 
@@ -49,18 +49,15 @@
 </table>
 <script src="./js/delete_wand.js"></script>
 
-<h2>Search Wands</h2>
-<p>Search by Wood using the field below.</p>
-<form id="search-wand-html" method='GET' action='/'>
-    <label for="input-wood">Search by Wood: </label>
-    <input type="text" name="wood" id="input-wood-html-search">
 
-    <button type="submit">Submit</button>
-    <br>
-    <a href='/'><button>Reset</button></a>
-</form>
+<div class="button-container">
+    <button id="show-add">Add a Wand</button>
+    <button id="show-update">Update a Wand</button>
+</div>
 
-{{!-- Form to add a record to the table  --}}
+
+<div id="add-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Add a Wand</h2>
 <p>To add a new wand, please enter the information below and click 'Submit'!</p>
 <form id="add-wand-form-ajax">
@@ -84,32 +81,58 @@
     <label for="input-totalWandQuantity">Total Wand Quantity: </label>
     <input type="number" id="input-totalWandQuantity" name="input-totalWandQuantity" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-add-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/add_wand.js"></script>
 
-<h2>Update a Wand</h2>
-<p>To update a specific wand's core</p>
-<form id="update-wand-form-ajax">
+<div id="update-overlay" class="overlay" style="display: none;">
+    <div class="overlay-content">
+        <h2>Update a Wand</h2>
+        <p>Edit a wand and click 'Submit'!</p>
+        <form id="update-wand-form-ajax">
+            <label for="update-wandID">ID: </label>
+            <select id="update-wandID" name="wandID" required>
+                <option value="">Select a Wand ID</option>
+                {{#each data}}
+                    <option value="{{this.wandID}}">{{this.wandID}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-wandID">Wand ID: </label>
-    <select name="input-wandID" id="mySelect">
-        <option value="test">Select a Wand</option>
-        {{#each data}}
-        <option value="{{this.wandID}}">{{this.wandID}}</option>
-        {{/each}}
-    </select>
+            <label for="update-length">Length: </label>
+            <input type="number" id="update-length" name="length" step="0.5">
 
-    <label for="input-core">Core: </label>
-    <select name="input-core" id="input-core-update">
-    <option value="test">Select a Core Type</option>
-    {{#each core}}
-        <option value="{{this}}">{{this}}</option>
-    {{/each}}
-</select>
+            <label for="update-price">Price: </label>
+            <input type="number" id="update-price" name="price">
 
-    <button type="submit">Submit</button>
+            <label for="update-core">Core: </label>
+            <select id="update-core" name="core" >
+                <option value="">Select a Core Type</option>
+                {{#each core}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
 
-</form>
+            <label for="update-wood">Wood: </label>
+            <input type="text" id="update-wood" name="wood">
+
+            <label for="update-totalWandQuantity">Total Wand Quantity: </label>
+            <input type="number" id="update-totalWandQuantity" name="totalWandQuantity">
+
+            <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="button" id="close-update-overlay">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script src="./js/update_wand.js"></script>
+
+<script src="./js/add.js"></script>
+<script src="./js/edit.js"></script>

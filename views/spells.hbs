@@ -10,7 +10,7 @@
  -->
 <link rel="stylesheet" href="css/styles.css">
 
-<h1>SPELLS</h1>
+<h1>Spells</h1>
 
 <!-- Create a table -->
 <table id="Spells-table">
@@ -39,17 +39,13 @@
 </table>
 <script src="./js/delete_spell.js"></script>
 
-<h2>Search Spells</h2>
-<p>Search by typeOfSpell using the field below.</p>
-<form id="search-spell-html" method="GET" action="/spells">
-    <label for="input-typeOfSpell">Search by Type of Spell: </label>
-    <input type="text" name="typeOfSpell" id="input-typeOfSpell-html-search">
-    <button type="submit">Submit</button>
-    <br>
-    <a href="/spells"><button type="button">Reset</button></a>
-</form>
+<div class="button-container">
+    <button id="show-add">Add a Spell</button>
+    <button id="show-update">Update a Spell</button>
+</div>
 
-<!-- Form to add a record to the table -->
+<div id="add-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Add a Spell</h2>
 <p>To add a new spell, please enter the information below and click 'Submit'!</p>
 <form id="add-spell-form-ajax">
@@ -65,15 +61,22 @@
     <label for="input-totalSpellQuantity">Total Spell Quantity: </label>
     <input type="number" id="input-totalSpellQuantity" name="totalSpellQuantity" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-add-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
 <script src="./js/add_spell.js"></script>
 
+<div id="update-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Update a Spell</h2>
 <p>To update a specific spell's type or quantity, please select the spell and provide the new values.</p>
 <form id="update-spell-form-ajax">
-    <label for="input-spellID">Spell ID: </label>
-    <select name="spellID" id="mySelect">
+    <label for "update-spellid">Spell ID:</label>
+    <select name="spellID" id="update-spellid">
         <option value="" disabled selected>Select a Spell</option>
         {{#each data}}
         <option value="{{this.spellID}}">{{this.spellID}}</option>
@@ -92,6 +95,14 @@
     <label for="update-totalSpellQuantity">Total Spell Quantity: </label>
     <input type="number" name="totalSpellQuantity" id="update-totalSpellQuantity">
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-update-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/update_spell.js"></script>
+<script src="./js/add.js"></script>
+<script src="./js/edit.js"></script>

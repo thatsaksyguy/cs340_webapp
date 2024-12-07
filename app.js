@@ -43,19 +43,32 @@ app.get("/", function (req, res) {
     ];
 
     // If there is no query string, we just perform a basic SELECT
-    if (req.query.wood === undefined) {
+    if (!req.query.wood && !req.query.length) {
         query1 = "SELECT * FROM `Wands`;";
     }
 
     // If there is a query string, we assume this is a search, and return desired results
     else {
-        query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%"`;
+
+        if (req.query.wood && req.query.length) {
+            query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%" AND length LIKE "${req.query.length}%"`;
+        }
+
+        if (req.query.length) {
+            query1 = `SELECT * FROM Wands WHERE core LIKE "${req.query.length}%"`;
+        }
+
+        if (req.query.wood) {
+            query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%"`;
+        }
+
     }
 
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
         return res.render("wands", { data: rows, core: coreTypes });
     });
+
 });
 
 app.get("/wands", function (req, res) {
@@ -135,31 +148,37 @@ app.delete("/delete-wand-ajax/", function (req, res, next) {
     });
 });
 
-app.put("/put-wand-ajax", function (req, res, next) {
+app.put("/put-wand-ajax", function (req, res) {
     let data = req.body;
 
-    let core = data.core;
     let wandID = parseInt(data.wandID);
+    let length = data.length;
+    let price = data.price;
+    let core = data.core;
+    let wood = data.wood;
+    let totalWandQuantity = data.totalWandQuantity;
 
-    let queryUpdateCore = `UPDATE Wands SET core = ? WHERE Wands.wandID = ?`;
-    let selectCore = `SELECT * FROM Wands WHERE wandID = ?`;
+    console.log("Data received:", data);
 
-    // Run the 1st query
+    let queryUpdateWand = `UPDATE Wands
+                            SET length = ?,
+                                price = ?,
+                                core = ?,
+                                wood = ?,
+                                totalWandQuantity = ?
+                            WHERE wandID = ?`;
+
+    let selectUpdatedWand = `SELECT * FROM Wands WHERE wandID = ?`;
+
     db.pool.query(
-        queryUpdateCore,
-        [core, wandID],
+        queryUpdateWand,
+        [length, price, core, wood, totalWandQuantity, wandID],
         function (error, rows, fields) {
             if (error) {
-                // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
                 console.log(error);
                 res.sendStatus(400);
-            }
-
-            // If there was no error, we run our second query and return that data so we can use it to update the people's
-            // table on the front-end
-            else {
-                // Run the second query
-                db.pool.query(selectCore, [core], function (error, rows, fields) {
+            } else {
+                db.pool.query(selectUpdatedWand, [wandID], function (error, rows, fields) {
                     if (error) {
                         console.log(error);
                         res.sendStatus(400);
@@ -177,13 +196,13 @@ app.get("/customers", function (req, res) {
     let query1;
 
     // If there is no query string, we just perform a basic SELECT
-    if (req.query.email === undefined) {
+    if (req.query.name === undefined) {
         query1 = "SELECT * FROM `Customers`;";
     }
 
     // If there is a query string, we assume this is a search, and return desired results
     else {
-        query1 = `SELECT * FROM Customers WHERE email LIKE "${req.query.email}%"`;
+        query1 = `SELECT * FROM Customers WHERE name LIKE "${req.query.name}%"`;
     }
 
     // Run the 1st query
@@ -251,11 +270,11 @@ app.put("/put-customer-ajax", function (req, res, next) {
     let address = data.address;
     let customerID = parseInt(data.customerID);
 
-    let queryUpdateCustomer = `UPDATE Customers 
-                              SET name = ?, 
-                                  email = ?, 
-                                  phone = ?, 
-                                  address = ? 
+    let queryUpdateCustomer = `UPDATE Customers
+                              SET name = ?,
+                                  email = ?,
+                                  phone = ?,
+                                  address = ?
                               WHERE customerID = ?`;
 
     let selectCustomer = `SELECT * FROM Customers WHERE customerID = ?`;
@@ -287,38 +306,43 @@ app.put("/put-customer-ajax", function (req, res, next) {
     );
 });
 
-app.get("/spells", function (req, res) {
-    // Declare Query 1
-    let query1;
+app.get("/orders", function (req, res) {
+    // Query to get orders
+    let query1 = "SELECT * FROM Orders;";
+    // Query to get customers
+    let query2 = "SELECT * FROM Customers;";
 
-    let spellTypes = [
-        "Disarming",
-        "Stunning",
-        "Dragon Levitation"
-    ];
-
-    // If there is no query string, we just perform a basic SELECT
-    if (req.query.typeOfSpell === undefined) {
-        query1 = "SELECT * FROM `Spells`;";
-    }
-
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-        query1 = `SELECT * FROM Spells WHERE typeOfSpell LIKE "${req.query.typeOfSpell}%"`;
-    }
-
-    // Run the 1st query
+    // Run the query to get orders
     db.pool.query(query1, function (error, rows, fields) {
-        console.log(rows)
-        return res.render("spells", { data: rows, spellType: spellTypes });
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+            return;
+        }
+
+        let orders = rows; // Save the orders
+
+        // Run the query to get customers
+        db.pool.query(query2, function (error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+            }
+
+            let customers = rows; // Save the customers
+            // Render both orders and customers to the Handlebars template
+            return res.render("index", { data: orders, customers: customers });
+        });
     });
 });
+
 
 
 app.post("/add-spell-ajax", function (req, res) {
     let data = req.body;
 
-    let query1 = `INSERT INTO Spells (level, price, typeOfSpell, totalSpellQuantity) 
+    let query1 = `INSERT INTO Spells (level, price, typeOfSpell, totalSpellQuantity)
                   VALUES ('${data.level}', '${data.price}', '${data.typeOfSpell}', '${data.totalSpellQuantity}')`;
 
     db.pool.query(query1, function (error, rows, fields) {
@@ -364,11 +388,11 @@ app.put("/put-spell-ajax", function (req, res) {
     let typeOfSpell = data.typeOfSpell;
     let totalSpellQuantity = data.totalSpellQuantity;
 
-    let queryUpdateSpell = `UPDATE Spells 
-                            SET level = ?, 
-                                price = ?, 
-                                typeOfSpell = ?, 
-                                totalSpellQuantity = ? 
+    let queryUpdateSpell = `UPDATE Spells
+                            SET level = ?,
+                                price = ?,
+                                typeOfSpell = ?,
+                                totalSpellQuantity = ?
                             WHERE spellID = ?`;
 
     let selectUpdatedSpell = `SELECT * FROM Spells WHERE spellID = ?`;
@@ -396,24 +420,38 @@ app.put("/put-spell-ajax", function (req, res) {
 
 
 app.get("/orders", function (req, res) {
-    // Declare Query 1
-    let query1;
+     // Declare Query 1
 
-    // If there is no query string, we just perform a basic SELECT
-    if (req.query.orderID === undefined) {
-        query1 = "SELECT * FROM `Orders`;";
-    }
 
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-        query1 = `SELECT * FROM Customers WHERE orderID LIKE "${req.query.orderID}%"`;
-    }
+     let query1 = "SELECT * FROM Orders;";
 
-    // Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
-        return res.render("orders", { data: rows });
-    });
-});
+     // Query 2 is the same in both cases
+     let query2 = "SELECT * FROM Customers;";
+
+     // Run the 1st query
+     db.pool.query(query1, function(error, rows, fields){
+
+         // Save the people
+         let orders = rows;
+
+         // Run the second query
+         db.pool.query(query2, (error, rows, fields) => {
+
+             // Save the planets
+             let customers = rows;
+             console.log("Customers Data:", customers);
+             let customermap = {}
+             customers.map(customer => {
+                let id = parseInt(customer.customerID, 10)
+                customermap[id] = customer["name"];
+             })
+
+             orders = orders.map(order => {
+                return Object.assign(order, {name: customermap[order.customerID]})
+             })
+             return res.render('index', {data: orders, customers: customers});
+
+         });
 
 app.post("/add-order-ajax", function (req, res) {
     // Capture the incoming data and parse it back to a JS object
@@ -473,10 +511,10 @@ app.put("/put-order-ajax", function (req, res, next) {
     let totalPrice = data.totalPrice;
     let orderID = parseInt(data.orderID);
 
-    let queryUpdateOrder = `UPDATE Orders 
-                              SET orderDate = ?, 
-                                  customerID = ?, 
-                                  totalPrice = ?, 
+    let queryUpdateOrder = `UPDATE Orders
+                              SET orderDate = ?,
+                                  customerID = ?,
+                                  totalPrice = ?,
                               WHERE orderID = ?`;
 
     let selectOrder = `SELECT * FROM Orders WHERE orderID = ?`;
@@ -588,10 +626,10 @@ app.put("/put-orderItem-ajax", function (req, res, next) {
     let price = data.price;
     let orderItemID = parseInt(data.orderItemID);
 
-    let queryUpdateOrderItem = `UPDATE OrderItems 
-                              SET orderID = ?, 
-                                  wandID = ?, 
-                                  spellID = ?, 
+    let queryUpdateOrderItem = `UPDATE OrderItems
+                              SET orderID = ?,
+                                  wandID = ?,
+                                  spellID = ?,
                                   quantity = ?,
                                   price = ?
                               WHERE orderItemID = ?`;

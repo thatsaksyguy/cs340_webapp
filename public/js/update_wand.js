@@ -1,73 +1,87 @@
-
 // Get the objects we need to modify
-let updateWandForm = document.getElementById('update-wand-form-ajax');
+let updateSpellForm = document.getElementById('update-wand-form-ajax');
 
 // Modify the objects we need
-updateWandForm.addEventListener("submit", function (e) {
-
+updateSpellForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputWandID = document.getElementById("mySelect");
-    let inputCore = document.getElementById("input-core-update");
+    let inputWandID = document.getElementById("update-wandID");
+    let inputLength = document.getElementById("update-length");
+    let inputPrice = document.getElementById("update-price");
+    let inputCore = document.getElementById("update-core");
+    let inputWood = document.getElementById("update-wood");
+    let inputTotalWandQuantity = document.getElementById("update-totalWandQuantity");
 
     // Get the values from the form fields
     let wandIDValue = inputWandID.value;
+    let lengthValue = inputLength.value;
+    let priceValue = parseFloat(inputPrice.value);
     let coreValue = inputCore.value;
+    let woodValue = inputWood.value;
+    let totalWandQuantityValue = parseInt(inputTotalWandQuantity.value);
 
-    // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
-
-
-    // Put our data we want to send in a javascript object
+    // Put our data we want to send in a JavaScript object
     let data = {
         wandID: wandIDValue,
+        length: lengthValue,
+        price: priceValue,
         core: coreValue,
-    }
+        wood: woodValue,
+        totalWandQuantity: totalWandQuantityValue,
+    };
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-wand-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    // Tell our AJAX request how to resolve
+    // Define how the AJAX request resolves
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-
-            // Add the new data to the table
+            // Update the row in the table
             updateRow(xhttp.response, wandIDValue);
 
+            // Clear the input fields for another update
+            inputLength.value = '';
+            inputPrice.value = '';
+            inputCore.value = '';
+            inputWood.value = '';
+            inputTotalWandQuantity.value = '';
+
+        } else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log("There was an error with the input.");
         }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
-            console.log("There was an error with the input.")
-        }
-    }
+    };
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
+});
 
-})
-
-
-function updateRow(data, wandID){
+// Function to update a row in the table
+function updateRow(data, wandID) {
     let parsedData = JSON.parse(data);
 
     let table = document.getElementById("wands-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == wandID) {
-
-            // Get the location of the row where we found the matching person ID
+        // Iterate through rows
+        // Rows would be accessed using the "row" variable assigned in the for loop
+        if (table.rows[i].getAttribute("data-value") == wandID) {
+            // Get the location of the row where we found the matching spell ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[3];
+            // Get the <td> elements in the row
+            let tds = updateRowIndex.getElementsByTagName("td");
 
-            // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].name;
-       }
+            // Update all fields
+            tds[0].innerHTML = parsedData[0].wandID;
+            tds[1].innerHTML = parsedData[0].length;
+            tds[2].innerHTML = parsedData[0].price;
+            tds[3].innerHTML = parsedData[0].core;
+            tds[4].innerHTML = parsedData[0].wood;
+            tds[5].innerHTML = parsedData[0].totalWandQuantity;
+        }
     }
 }

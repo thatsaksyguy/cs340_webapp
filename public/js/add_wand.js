@@ -6,6 +6,7 @@ addWandForm.addEventListener("submit", function (e) {
 
     // Prevent the form from submitting
     e.preventDefault();
+    window.location.reload();
 
     // Get form fields we need to get data from
     let inputLength = document.getElementById("input-length");
@@ -48,6 +49,7 @@ addWandForm.addEventListener("submit", function (e) {
             inputCore.value = '';
             inputWood.value = '';
             inputTotalWandQuantity.value = '';
+
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -108,7 +110,7 @@ addRowToTable = (data) => {
     row.appendChild(totalWandQuantityCell);
     row.appendChild(deleteCell);
 
-    row.setAttribute('data-value', newRow.id);
+    row.setAttribute('data-value', newRow.wandID);
 
     // Add the row to the table
     currentTable.appendChild(row);

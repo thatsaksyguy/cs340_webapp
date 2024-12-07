@@ -11,7 +11,9 @@
 
  <link rel="stylesheet" href="css/styles.css">
 
-<h1>ORDERS</h1>
+{{log customers}}
+
+<h1>Orders</h1>
 
 <!-- Create a table -->
 <table id="Orders-table">
@@ -39,36 +41,42 @@
 </table>
 <script src="./js/delete_order.js"></script>
 
-<h2>Search Orders</h2>
-<p>Search by orderID using the field below.</p>
-<form id="search-order-html" method="GET" action="/orders">
-    <label for="input-orderID">Search by Order ID: </label>
-    <input type="text" name="orderID" id="input-orderID-html-search">
-    <button type="submit">Submit</button>
-    <br>
-    <a href="/orders"><button type="button">Reset</button></a>
-</form>
+<div class="button-container">
+    <button id="show-add">Add an Order</button>
+    <button id="show-update">Update an Order</button>
+</div>
 
-<!-- Form to add a record to the table -->
+<div id="add-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Add an Order</h2>
 <p>To add a new order, please enter the information below and click 'Submit'!</p>
 <form id="add-order-form-ajax">
-    <label for="input-orderID">Order ID: </label>
-    <input type="text" id="input-orderID" name="orderID" required>
 
     <label for="input-orderDate">Order Date: </label>
-    <input type="number" id="input-orderDate" name="orderDate" required>
+    <input type="date" id="input-orderDate" name="orderDate" required>
 
-    <label for="input-customerID">Customer ID: </label>
-    <input type="text" id="input-customerID" name="customerID" required>
+    <select name="input-name" id="input-name-ajax">
+    <option value="">Select a Customer</option>
+    {{#each customers}}
+        <option value="{{this.customerID}}">{{this.name}}</option>
+    {{/each}}
+    </select>
 
     <label for="input-totalPrice">Total Price: </label>
     <input type="number" id="input-totalPrice" name="totalPrice" required>
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-add-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/add_order.js"></script>
 
+<div id="update-overlay" class="overlay" style="display: none;">
+<div class="overlay-content">
 <h2>Update an Order</h2>
 <p>To update an order, please select the Order ID and provide the new values.</p>
 <form id="update-order-form-ajax">
@@ -81,14 +89,25 @@
     </select>
 
     <label for="update-orderDate">Order Date: </label>
-    <input type="text" name="orderDate" id="update-orderDate">
+    <input type="date" name="orderDate" id="update-orderDate">
 
-    <label for="update-customerID">Customer ID: </label>
-    <input type="number" name="customerID" id="update-customerID">
+    <select name="name" id="mySelect">
+        <option value="" disabled selected>Select a Customer</option>
+        {{#each data}}
+        <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
 
     <label for="update-totalPrice">Total Price: </label>
-    <input type="text" name="totalPrice" id="update-totalPrice">
+    <input type="number" name="totalPrice" id="update-totalPrice">
 
+    <div class="button-container">
     <button type="submit">Submit</button>
+    <button type="button" id="close-update-overlay">Cancel</button>
+    </div>
 </form>
+</div>
+</div>
+
 <script src="./js/update_order.js"></script>
+<script src="./js/add.js"></script>
+<script src="./js/edit.js"></script>

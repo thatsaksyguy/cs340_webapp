@@ -1,21 +1,21 @@
 body {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #a4a0cf;
+    background-color: #0A0C26;
 }
 
 nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #53468b;
+    background-color: #1d1f4a;
     padding: 10px;
     text-align: center;
 }
 
 nav a {
-    color: white;
+    color: #ffffff;
     font-size: 23px;
     margin: 0 15px;
     text-decoration: none;
@@ -23,29 +23,43 @@ nav a {
 }
 
 nav a:hover {
-    color: #ffcc00;
+    color: #4971A6;
 }
 
-.magic-logo {
-    height: 165px;
-    padding-top: 10px;
+.navbar-logo {
+    padding-top: 20px;
 }
 
-.magic-logo:hover {
-    transform: scale(1.05);
-}
-
-h1 {
-    color: #ffffff;
-    background-color: #443584;
-    padding: 20px;
+.nav-logo {
+    font-family: 'Potter';
+    font-size: 100px;
+    color: #f8dd6f;
+    padding-top: 40px;
     text-align: center;
     margin: 20px 0;
 }
 
+.nav-logo:hover {
+    transform: scale(1.02);
+}
+
+.navbar-links {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+h1 {
+    font-family: 'Potter';
+    font-size: 100px;
+    color: #f8dd6f;
+    padding-top: 40px;
+    text-align: center;
+    margin: 0px 0;
+}
+
 h2 {
     font-size: 28px;
-    color: #443584;
+    color: #a0a4c9;
     margin-top: 15px;
     margin-bottom: 10px;
     text-align: center;
@@ -55,18 +69,18 @@ table {
     width: 90%;
     margin: 20px auto;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: #a0a4c9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 table th, table td {
-    border: 1px solid #000000;
+    border: 1px solid #121435;
     padding: 12px;
     text-align: center;
 }
 
 table th {
-    background-color: #443584;
+    background-color: #3a3e6f;
     color: white;
 }
 
@@ -80,8 +94,8 @@ table td button {
 }
 
 table td button:hover {
-    background-color: #5aceee;
-    color: #333;
+    background-color: #f8dd6f;
+    color: #ffffff;
 }
 
 form {
@@ -90,8 +104,8 @@ form {
     align-items: stretch;
     width: 320px;
     margin: 10px auto;
-    padding: 20px;
-    background-color: #fff;
+    padding:20px;
+    background-color: #2e315c;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -99,33 +113,73 @@ form {
 form label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #443584;
+    color: #ffffff;
+    padding: 10px;
 }
 
 form input[type="text"], form input[type="email"], form input[type="number"], select {
     padding: 10px;
+    color: #fff;
+    background-color: #151735;
     margin-bottom: 15px;
-    border: 2px solid #ddd;
+    border: #121435 1px;
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.overlay-content {
+    background-color: #1d1f4a;
+    padding: 20px;
+    border-radius: 10px;
+    width: 900px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
 button {
-    background-color: #333;
-    color: white;
+    display: inline-block;
+    background-color: #4971A6;
+    color: rgb(255, 255, 255);
     padding: 10px 16px;
     border: none;
     border-radius: 4px;
 }
 
-form button:hover {
-    background-color: #5aceee;
+button:hover {
+    background-color: #f8dd6f;
     color: #333;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 form a button {
-    background-color: #443584;
+    background-color: #0A0C26;
     color: #fff;
     margin-left: 125px;
     padding: 10px 16px;
@@ -134,7 +188,7 @@ form a button {
 }
 
 footer {
-    background-color: #53468b;
+    background-color: #336477;
     color: white;
     text-align: center;
     padding: 15px;
@@ -143,6 +197,13 @@ footer {
 
 p {
     text-align: center;
-    color: #443584;
+    color: #ffffff;
     margin: 10px 0;
+}
+
+@font-face {
+    font-family: 'Potter';
+    src: url('/fonts/HARRYP.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }

@@ -44,7 +44,7 @@ CREATE TABLE Orders (
     orderDate DATE NOT NULL,
     customerID INT(11) NOT NULL,
     totalPrice DECIMAL(7, 2) NOT NULL,
-    FOREIGN KEY (customerID) REFERENCES Customers(customerID),
+    FOREIGN KEY (customerID) REFERENCES Customers(customerID) ON DELETE CASCADE,
     PRIMARY KEY (orderID)
 );
 
@@ -68,21 +68,21 @@ CREATE INDEX idx_customerID ON Orders(customerID);
 -- SAMPLE DATA FOR TESTING
 -- CUSTOMERS
 INSERT INTO Customers (name, email, phone, address)
-VALUES 
+VALUES
 ('Harry Potter', 'harry.potter@hogwarts.edu', '123-456-7890', '4 Privet Drive, Little Whinging'),
 ('Hermione Granger', 'hermione@hogwarts.edu', '234-567-8901', '6 Privet Drive, Little Whinging'),
 ('Ron Weasley', 'ron.weasley@hogwarts.edu', '345-678-9012', '7 Privet Drive, Little Whinging');
 
 -- WANDS
 INSERT INTO Wands (length, core, wood, price, totalWandQuantity)
-VALUES 
+VALUES
 (11.0, 'Phoenix Feather', 'Holly', 150.00, 5),
 (13.5, 'Dragon Heartstring', 'Oak', 175.00, 3),
 (10.5, 'Unicorn Tail Hair', 'Maple', 135.00, 4);
 
 -- SPELLS
 INSERT INTO Spells (level, typeOfSpell, price, totalSpellQuantity)
-VALUES 
+VALUES
 ('Intermediate', 'Disarming', 50.00, 10),
 ('Advanced', 'Stunning', 75.00, 8),
 ('Beginner', 'Levitation', 25.00, 15);
@@ -90,7 +90,7 @@ VALUES
 -- ORDERS
 -- CUSTOMERID VALUES ADDED
 INSERT INTO Orders (customerID, orderDate, totalPrice)
-VALUES 
+VALUES
 (1, CURDATE(), 200.00),
 (2, CURDATE(), 275.00),
 (3, CURDATE(), 160.00);
@@ -99,7 +99,7 @@ VALUES
 -- ORDERITEMS - WANDS
 -- ORDERID AND WANDID VALUES ADDED
 INSERT INTO OrderItems (orderID, wandID, quantity, price)
-VALUES 
+VALUES
 (1, 1, 1, 150.00),
 (2, 2, 1, 175.00),
 (3, 3, 1, 135.00);
@@ -107,7 +107,7 @@ VALUES
 -- ORDERITEMS - SPELLS
 -- ORDERID AND SPELLID VALUES ADDED
 INSERT INTO OrderItems (orderID, spellID, quantity, price)
-VALUES 
+VALUES
 (1, 1, 1, 50.00),
 (2, 2, 1, 75.00),
 (3, 3, 1, 25.00);
