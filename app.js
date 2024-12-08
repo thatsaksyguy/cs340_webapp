@@ -497,7 +497,13 @@ app.put("/put-order-ajax", function (req, res, next) {
     );
 });
 
+<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+app.get("/order-items", function (req, res) {
+    // Declare Query 1
+    let query1;
+>>>>>>> 227509c (Update app.js)
 
 app.get("/order-items", function (req, res) {
      // Declare Query 1
