@@ -6,7 +6,6 @@ addWandForm.addEventListener("submit", function (e) {
 
     // Prevent the form from submitting
     e.preventDefault();
-    window.location.reload();
 
     // Get form fields we need to get data from
     let inputLength = document.getElementById("input-length");
@@ -49,6 +48,10 @@ addWandForm.addEventListener("submit", function (e) {
             inputCore.value = '';
             inputWood.value = '';
             inputTotalWandQuantity.value = '';
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {

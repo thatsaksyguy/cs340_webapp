@@ -16,7 +16,7 @@
 <h1>Orders</h1>
 
 <!-- Create a table -->
-<table id="Orders-table">
+<table id="orders-table">
     <!-- Header section -->
     <thead>
         <tr>
@@ -55,8 +55,9 @@
     <label for="input-orderDate">Order Date: </label>
     <input type="date" id="input-orderDate" name="orderDate" required>
 
-    <select name="input-name" id="input-name-ajax">
-    <option value="">Select a Customer</option>
+    <label for="input-customerID">Customer ID: </label>
+    <select name="input-customerID" id="input-customerID">
+    <option value="">Select a Customer:</option>
     {{#each customers}}
         <option value="{{this.customerID}}">{{this.name}}</option>
     {{/each}}
@@ -80,9 +81,9 @@
 <h2>Update an Order</h2>
 <p>To update an order, please select the Order ID and provide the new values.</p>
 <form id="update-order-form-ajax">
-    <label for="input-orderID">Order ID: </label>
-    <select name="orderID" id="mySelect">
-        <option value="" disabled selected>Select an Order</option>
+    <label for="update-orderID">Order ID: </label>
+    <select name="orderID" id="update-orderID">
+        <option value="">Select an Order</option>
         {{#each data}}
         <option value="{{this.orderID}}">{{this.orderID}}</option>
         {{/each}}
@@ -91,11 +92,13 @@
     <label for="update-orderDate">Order Date: </label>
     <input type="date" name="orderDate" id="update-orderDate">
 
-    <select name="name" id="mySelect">
-        <option value="" disabled selected>Select a Customer</option>
-        {{#each data}}
-        <option value="{{this.name}}">{{this.name}}</option>
+    <label for="input-customerID">Customer ID: </label>
+    <select name="customerID" id="update-customerID">
+        <option value="">Select a Customer:</option>
+        {{#each customers}}
+        <option value="{{this.customerID}}">{{this.name}}</option>
         {{/each}}
+    </select>
 
     <label for="update-totalPrice">Total Price: </label>
     <input type="number" name="totalPrice" id="update-totalPrice">

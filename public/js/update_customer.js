@@ -52,6 +52,9 @@ updateCustomerForm.addEventListener("submit", function (e) {
             inputPhone.value = '';
             inputAddress.value = '';
 
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -79,14 +82,14 @@ function updateRow(data, customerID){
 
             // Get td of homeworld value
             let tds = updateRowIndex.getElementsByTagName("td");
-            
+
             // Update all fields
             tds[0].innerHTML = parsedData[0].customerID;
             tds[1].innerHTML = parsedData[0].name;
             tds[2].innerHTML = parsedData[0].email;
             tds[3].innerHTML = parsedData[0].phone;
             tds[4].innerHTML = parsedData[0].address;
-            
+
        }
     }
 }

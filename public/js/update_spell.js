@@ -7,7 +7,7 @@ updateSpellForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputSpellID = document.getElementById("mySelect");
+    let inputSpellID = document.getElementById("update-spellid");
     let inputLevel = document.getElementById("update-level");
     let inputPrice = document.getElementById("update-price");
     let inputTypeOfSpell = document.getElementById("update-typeOfSpell");
@@ -45,6 +45,11 @@ updateSpellForm.addEventListener("submit", function (e) {
             inputPrice.value = '';
             inputTypeOfSpell.value = '';
             inputTotalSpellQuantity.value = '';
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
         } else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.");
         }

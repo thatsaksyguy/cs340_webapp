@@ -34,16 +34,16 @@
             <td>{{this.spellID}}</td>
             <td>{{this.quantity}}</td>
             <td>{{this.price}}</td>
-            <td><button onclick="deleteOrderItem({{this.orderItemID}})">Delete</button></td>
+            <td><button onclick="deleteOrderItems({{this.orderItemID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<script src="./js/delete_orderItem.js"></script>
+<script src="./js/delete_orderitem.js"></script>
 
 <div class="button-container">
-    <button id="show-add">Add a Customer</button>
-    <button id="show-update">Update a Customer</button>
+    <button id="show-add">Add an Order Item</button>
+    <button id="show-update">Update an Order Item</button>
 </div>
 
 <div id="add-overlay" class="overlay" style="display: none;">
@@ -51,17 +51,30 @@
 <h2>Add an Order Item</h2>
 <p>To add a new order item, please enter the information below and click 'Submit'!</p>
 <form id="add-orderItem-form-ajax">
-    <label for="input-orderItemID">Order Item ID: </label>
-    <input type="text" id="input-orderItemID" name="orderItemID" required>
 
     <label for="input-orderID">Order ID: </label>
-    <input type="number" id="input-orderID" name="orderID" required>
+    <select name="orderID" id="input-orderID">
+        <option value="">Select an Order:</option>
+        {{#each orders}}
+        <option value="{{this.orderID}}">{{this.orderID}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-wandID">Wand ID: </label>
-    <input type="text" id="input-wandID" name="wandID">
+    <select name="wandID" id="input-wandID">
+        <option value="">Select a Wand:</option>
+        {{#each wands}}
+        <option value="{{this.wandID}}">{{this.wandID}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-spellID">Spell ID: </label>
-    <input type="number" id="input-spellID" name="spellID">
+    <select name="spellID" id="input-spellID">
+        <option value="">Select a Spell:</option>
+        {{#each spells}}
+        <option value="{{this.spellID}}">{{this.spellID}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-quantity">Quantity: </label>
     <input type="number" id="input-quantity" name="quantity" required>
@@ -77,15 +90,15 @@
 </div>
 </div>
 
-<script src="./js/add_orderItem.js"></script>
+<script src="./js/add_orderitem.js"></script>
 
 <div id="update-overlay" class="overlay" style="display: none;">
 <div class="overlay-content">
 <h2>Update an Order Item</h2>
 <p>To update an order item, please select the Order Item ID and provide the new values.</p>
 <form id="update-orderItem-form-ajax">
-    <label for="input-orderItemID">Order Item ID: </label>
-    <select name="orderItemID" id="mySelect">
+    <label for="update-orderItemID">Order Item ID: </label>
+    <select name="orderItemID" id="update-orderItemID">
         <option value="" disabled selected>Select an Order Item</option>
         {{#each data}}
         <option value="{{this.orderItemID}}">{{this.orderItemID}}</option>
@@ -93,19 +106,34 @@
     </select>
 
     <label for="update-orderID">Order ID: </label>
-    <input type="text" name="orderID" id="update-orderID">
+    <select name="orderID" id="update-orderID">
+        <option value="">Select an Order:</option>
+        {{#each orders}}
+        <option value="{{this.orderID}}">{{this.orderID}}</option>
+        {{/each}}
+    </select>
 
     <label for="update-wandID">Wand ID: </label>
-    <input type="number" name="wandID" id="update-wandID">
+    <select name="wandID" id="update-wandID">
+        <option value="">Select a Wand:</option>
+        {{#each wands}}
+        <option value="{{this.wandID}}">{{this.wandID}}</option>
+        {{/each}}
+    </select>
 
     <label for="update-spellID">Spell ID: </label>
-    <input type="text" name="spellID" id="update-spellID">
+    <select name="spellID" id="update-spellID">
+        <option value="">Select a Spell:</option>
+        {{#each spells}}
+        <option value="{{this.spellID}}">{{this.spellID}}</option>
+        {{/each}}
+    </select>
 
     <label for="update-quantity">Quantity: </label>
-    <input type="text" name="quantity" id="update-quantity">
+    <input type="number" name="quantity" id="update-quantity">
 
     <label for="update-price">Price: </label>
-    <input type="text" name="price" id="update-price">
+    <input type="number" name="price" id="update-price">
 
     <div class="button-container">
     <button type="submit">Submit</button>
@@ -115,6 +143,6 @@
 </div>
 </div>
 
-<script src="./js/update_orderItem.js"></script>
+<script src="./js/update_orderitem.js"></script>
 <script src="./js/add.js"></script>
 <script src="./js/edit.js"></script>

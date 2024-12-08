@@ -44,6 +44,10 @@ addSpellForm.addEventListener("submit", function (e) {
             inputPrice.value = '';
             inputTypeOfSpell.value = '';
             inputTotalSpellQuantity.value = '';
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")

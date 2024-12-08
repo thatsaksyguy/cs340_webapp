@@ -32,44 +32,10 @@ app.set("view engine", ".hbs");
 */
 // HOME
 app.get("/", function (req, res) {
-    // Declare Query 1
-    let query1;
-
-    let coreTypes = [
-        "None",
-        "Unicorn Tail Hair",
-        "Dragon Heartstring",
-        "Phoenix Feather",
-    ];
-
-    // If there is no query string, we just perform a basic SELECT
-    if (!req.query.wood && !req.query.length) {
-        query1 = "SELECT * FROM `Wands`;";
-    }
-
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-
-        if (req.query.wood && req.query.length) {
-            query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%" AND length LIKE "${req.query.length}%"`;
-        }
-
-        if (req.query.length) {
-            query1 = `SELECT * FROM Wands WHERE core LIKE "${req.query.length}%"`;
-        }
-
-        if (req.query.wood) {
-            query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%"`;
-        }
-
-    }
-
-    // Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
-        return res.render("wands", { data: rows, core: coreTypes });
-    });
-
+    res.render("homepage");
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get("/wands", function (req, res) {
     // Declare Query 1
@@ -191,6 +157,8 @@ app.put("/put-wand-ajax", function (req, res) {
     );
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.get("/customers", function (req, res) {
     // Declare Query 1
     let query1;
@@ -306,38 +274,27 @@ app.put("/put-customer-ajax", function (req, res, next) {
     );
 });
 
-app.get("/orders", function (req, res) {
-    // Query to get orders
-    let query1 = "SELECT * FROM Orders;";
-    // Query to get customers
-    let query2 = "SELECT * FROM Customers;";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Run the query to get orders
+app.get("/spells", function (req, res) {
+    // Declare Query 1
+    let query1;
+
+    // If there is no query string, we just perform a basic SELECT
+    if (req.query.name === undefined) {
+        query1 = "SELECT * FROM `Spells`;";
+    }
+
+    // If there is a query string, we assume this is a search, and return desired results
+    else {
+        query1 = `SELECT * FROM Spells WHERE name LIKE "${req.query.name}%"`;
+    }
+
+    // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(500);
-            return;
-        }
-
-        let orders = rows; // Save the orders
-
-        // Run the query to get customers
-        db.pool.query(query2, function (error, rows, fields) {
-            if (error) {
-                console.log(error);
-                res.sendStatus(500);
-                return;
-            }
-
-            let customers = rows; // Save the customers
-            // Render both orders and customers to the Handlebars template
-            return res.render("index", { data: orders, customers: customers });
-        });
+        return res.render("spells", { data: rows });
     });
 });
-
-
 
 app.post("/add-spell-ajax", function (req, res) {
     let data = req.body;
@@ -418,10 +375,10 @@ app.put("/put-spell-ajax", function (req, res) {
     );
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get("/orders", function (req, res) {
      // Declare Query 1
-
 
      let query1 = "SELECT * FROM Orders;";
 
@@ -439,23 +396,17 @@ app.get("/orders", function (req, res) {
 
              // Save the planets
              let customers = rows;
-             console.log("Customers Data:", customers);
-             let customermap = {}
-             customers.map(customer => {
-                let id = parseInt(customer.customerID, 10)
-                customermap[id] = customer["name"];
-             })
 
-             orders = orders.map(order => {
-                return Object.assign(order, {name: customermap[order.customerID]})
-             })
-             return res.render('index', {data: orders, customers: customers});
+             return res.render('orders', {data: orders, customers: customers});
 
          });
+        });
+    });
 
 app.post("/add-order-ajax", function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
+    console.log(req.body);
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Orders (orderDate, customerID, totalPrice) VALUES ('${data.orderDate}', '${data.customerID}', '${data.totalPrice}')`;
@@ -514,7 +465,7 @@ app.put("/put-order-ajax", function (req, res, next) {
     let queryUpdateOrder = `UPDATE Orders
                               SET orderDate = ?,
                                   customerID = ?,
-                                  totalPrice = ?,
+                                  totalPrice = ?
                               WHERE orderID = ?`;
 
     let selectOrder = `SELECT * FROM Orders WHERE orderID = ?`;
@@ -546,23 +497,46 @@ app.put("/put-order-ajax", function (req, res, next) {
     );
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.get("/order-items", function (req, res) {
-    // Declare Query 1
-    let query1;
+     // Declare Query 1
 
-    // If there is no query string, we just perform a basic SELECT
-    if (req.query.orderItemID === undefined) {
-        query1 = "SELECT * FROM `OrderItems`;";
-    }
+     let query1 = "SELECT * FROM OrderItems;";
 
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-        query1 = `SELECT * FROM OrderItems WHERE orderItemID LIKE "${req.query.orderItemID}%"`;
-    }
+     // Query 2 is the same in both cases
+     let query2 = "SELECT * FROM Orders;";
 
-    // Run the 1st query
-    db.pool.query(query1, function (error, rows, fields) {
-        return res.render("orderItems", { data: rows });
+     let query3 = "SELECT * FROM Wands;";
+
+     let query4 = "SELECT * FROM Spells;";
+
+     // Run the 1st query
+     db.pool.query(query1, function(error, rows, fields){
+
+        // Save OrderItems
+        let orderItems = rows;
+
+        // Run the 2nd query (Orders)
+        db.pool.query(query2, function(error, rows, fields){
+
+            let orders = rows;
+
+            // Run the 3rd query (Wands)
+            db.pool.query(query3, function(error, rows, fields) {
+
+                let wands = rows;
+
+                // Run the 4th query (Spells)
+                db.pool.query(query4, function(error, rows, fields) {
+
+                    let spells = rows;
+
+                    // Render the 'orderItems' view with all the data
+                    return res.render('orderItems', {data: orderItems, orders: orders, wands: wands, spells: spells});
+                });
+            });
+        });
     });
 });
 
@@ -600,7 +574,7 @@ app.post("/add-orderItem-ajax", function (req, res) {
     });
 });
 
-app.delete("/delete-orderItem-ajax/", function (req, res, next) {
+app.delete("/delete-orderItem-ajax", function (req, res, next) {
     let data = req.body;
     let orderItemID = parseInt(data.orderItemID);
     let deleteOrderItems = `DELETE FROM OrderItems WHERE orderItemID = ?`;

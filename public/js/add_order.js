@@ -42,6 +42,10 @@ addOrderForm.addEventListener("submit", function (e) {
             inputCustomerID.value = '';
             inputTotalPrice.value = '';
 
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -59,7 +63,7 @@ addOrderForm.addEventListener("submit", function (e) {
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
-    let currentTable = document.getElementById("Orders-table");
+    let currentTable = document.getElementById("orders-table");
 
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
@@ -86,7 +90,7 @@ addRowToTable = (data) => {
     deleteCell = document.createElement("button");
     deleteCell.innerHTML = "Delete";
     deleteCell.onclick = function(){
-        deleteWand(newRow.orderID);
+        deleteOrder(newRow.orderID);
     };
 
     // Add the cells to the row
@@ -95,7 +99,7 @@ addRowToTable = (data) => {
     row.appendChild(customerIDCell);
     row.appendChild(totalPriceCell);
 
-    row.setAttribute('data-value', newRow.id);
+    row.setAttribute('data-value', newRow.orderID);
 
     // Add the row to the table
     currentTable.appendChild(row);

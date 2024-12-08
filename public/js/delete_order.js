@@ -26,7 +26,7 @@ function deleteOrder(orderID) {
 }
 
 function deleteRow(orderID) {
-    let table = document.getElementById("Orders-table");
+    let table = document.getElementById("orders-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
