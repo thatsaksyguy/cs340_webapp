@@ -1,3 +1,12 @@
+//  Citation for this code structure.
+ 
+//  Date: 12/8/2024
+ 
+//  Adapted from CS 340 nodejs-starter-app, step 8, update_person.js
+//  values and data changes were made to adapt the website's theme
+ 
+//  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 // Get the objects we need to modify
 let updateOrderItemForm = document.getElementById('update-orderItem-form-ajax');
 
@@ -22,6 +31,14 @@ updateOrderItemForm.addEventListener("submit", function (e) {
     let spellIDValue = inputSpellID.value;
     let quantityValue = inputQuantity.value;
     let priceValue = inputPrice.value;
+
+    if (wandIDValue === '') {
+        wandIDValue = null;
+    }
+
+    if (spellIDValue === '') {
+        spellIDValue = null;
+    }
 
     // currently the database table for bsg_people does not allow updating values to NULL
     // so we must abort if being bassed NULL for homeworld
@@ -70,7 +87,6 @@ updateOrderItemForm.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(data));
 
 })
-
 
 function updateRow(data, orderItemID){
     let parsedData = JSON.parse(data);

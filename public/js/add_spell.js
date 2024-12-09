@@ -1,3 +1,13 @@
+
+//  Citation for this code structure.
+ 
+//  Date: 12/8/2024
+ 
+//  Adapted from CS 340 nodejs-starter-app, step 8, add_person.js
+//  values and data changes were made to adapt the website's theme
+ 
+//  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 // Get the objects we need to modify
 let addSpellForm = document.getElementById('add-spell-form-ajax');
 

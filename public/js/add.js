@@ -1,4 +1,4 @@
- //Citation for the index.hbs code structure.
+//Citation for the add.js code structure.
 
 // Date: 12/6/2024
 

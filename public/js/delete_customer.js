@@ -1,3 +1,13 @@
+
+//  Citation for this code structure.
+ 
+//  Date: 12/8/2024
+ 
+//  Adapted from CS 340 nodejs-starter-app, step 8, delete_person.js
+//  values and data changes were made to adapt the website's theme
+ 
+//  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 function deleteCustomer(customerID) {
     // Create the data object to send to the server
     let data = {

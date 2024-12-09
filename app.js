@@ -1,10 +1,11 @@
 /**
  * Citation for the app.get('/') code structure.
  *
- * Date: 11/21/2024
+ * Date: 12/8/2024
  *
  * Adapted from CS 340 nodejs-starter-app, steps 0-1.
- * Queries and function structure copied from example in app.js starter code.
+ * Queries and function structure copied from example in app.js starter code. The logic was altered
+ * to adapt the websites database schema.
  *
  * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
  */
@@ -17,7 +18,7 @@ var app = express(); // We need to instantiate an express object to interact wit
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-PORT = 4384; // Set a port number at the top so it's easy to change in the future
+PORT = 4388; // Set a port number at the top so it's easy to change in the future
 // Database
 var db = require("./back-end/database/db-connector");
 
@@ -497,14 +498,6 @@ app.put("/put-order-ajax", function (req, res, next) {
     );
 });
 
-<<<<<<< HEAD
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-=======
-app.get("/order-items", function (req, res) {
-    // Declare Query 1
-    let query1;
->>>>>>> 227509c (Update app.js)
-
 app.get("/order-items", function (req, res) {
      // Declare Query 1
 
@@ -531,12 +524,12 @@ app.get("/order-items", function (req, res) {
             // Run the 3rd query (Wands)
             db.pool.query(query3, function(error, rows, fields) {
 
-                let wands = rows;
+                let wands = [null,...rows];
 
                 // Run the 4th query (Spells)
                 db.pool.query(query4, function(error, rows, fields) {
 
-                    let spells = rows;
+                    let spells = [null,...rows];
 
                     // Render the 'orderItems' view with all the data
                     return res.render('orderItems', {data: orderItems, orders: orders, wands: wands, spells: spells});
@@ -551,7 +544,7 @@ app.post("/add-orderItem-ajax", function (req, res) {
     let data = req.body;
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO OrderItems (orderID, wandID, spellID, quantity, price) VALUES ('${data.orderID}', '${data.wandID}', '${data.spellID}', '${data.quantity}', '${data.price}')`;
+    query1 = `INSERT INTO OrderItems (orderID, wandID, spellID, quantity, price) VALUES ('${data.orderID}', ${data.wandID}, ${data.spellID}, '${data.quantity}', '${data.price}')`;
     db.pool.query(query1, function (error, rows, fields) {
         // Check to see if there was an error
         if (error) {

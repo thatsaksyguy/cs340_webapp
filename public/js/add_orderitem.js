@@ -1,3 +1,12 @@
+//  Citation for this code structure.
+ 
+//  Date: 12/8/2024
+ 
+//  Adapted from CS 340 nodejs-starter-app, step 8, add_person.js
+//  values and data changes were made to adapt the website's theme
+ 
+//  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 // Get the objects we need to modify
 let addOrderItemForm = document.getElementById('add-orderItem-form-ajax');
 
@@ -21,6 +30,14 @@ addOrderItemForm.addEventListener("submit", function (e) {
     let spellIDValue = inputSpellID.value;
     let quantityValue = inputQuantity.value;
     let priceValue = inputPrice.value;
+
+    if (wandIDValue === '') {
+        wandIDValue = null;
+    }
+
+    if (spellIDValue === '') {
+        spellIDValue = null;
+    }
 
     // Put our data we want to send in a javascript object
     let data = {
@@ -70,6 +87,7 @@ addOrderItemForm.addEventListener("submit", function (e) {
 // Creates a single row from an Object representing a single record from
 // bsg_people
 addRowToTable = (data) => {
+    console.log("ballsack")
 
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("OrderItems-table");
