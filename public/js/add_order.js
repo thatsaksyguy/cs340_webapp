@@ -1,11 +1,11 @@
 
 //  Citation for this code structure.
- 
+
 //  Date: 12/8/2024
- 
-//  Adapted from CS 340 nodejs-starter-app, step 8, add_person.js
+
+//  Adapted from CS 340 nodejs-starter-app, step 8, add_order.js
 //  values and data changes were made to adapt the website's theme
- 
+
 //  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
 // Get the objects we need to modify
@@ -69,7 +69,7 @@ addOrderForm.addEventListener("submit", function (e) {
 
 
 // Creates a single row from an Object representing a single record from
-// bsg_people
+// orders
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.

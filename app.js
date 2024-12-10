@@ -1,9 +1,45 @@
 /**
- * Citation for the app.get('/') code structure.
+ * Citation for the app.get code structure.
  *
  * Date: 12/8/2024
  *
- * Adapted from CS 340 nodejs-starter-app, steps 0-1.
+ * Adapted from CS 340 nodejs-starter-app, steps 4, 6
+ * Queries and function structure copied from example in app.js starter code. The logic was altered
+ * to adapt the websites database schema.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ */
+
+/**
+ * Citation for the app.post code structure.
+ *
+ * Date: 12/8/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 5.
+ * Queries and function structure copied from example in app.js starter code. The logic was altered
+ * to adapt the websites database schema.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ */
+
+/**
+ * Citation for the app.delete code structure.
+ *
+ * Date: 12/8/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 7
+ * Queries and function structure copied from example in app.js starter code. The logic was altered
+ * to adapt the websites database schema.
+ *
+ * Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+ */
+
+/**
+ * Citation for the app.put code structure.
+ *
+ * Date: 12/8/2024
+ *
+ * Adapted from CS 340 nodejs-starter-app, step 8.
  * Queries and function structure copied from example in app.js starter code. The logic was altered
  * to adapt the websites database schema.
  *
@@ -18,7 +54,7 @@ var app = express(); // We need to instantiate an express object to interact wit
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-PORT = 4388; // Set a port number at the top so it's easy to change in the future
+PORT = 4384; // Set a port number at the top so it's easy to change in the future
 // Database
 var db = require("./back-end/database/db-connector");
 
@@ -54,11 +90,6 @@ app.get("/wands", function (req, res) {
         query1 = "SELECT * FROM `Wands`;";
     }
 
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-        query1 = `SELECT * FROM Wands WHERE wood LIKE "${req.query.wood}%"`;
-    }
-
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
         return res.render("wands", { data: rows, core: coreTypes });
@@ -79,7 +110,7 @@ app.post("/add-wand-ajax", function (req, res) {
             res.sendStatus(400);
         }
 
-        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Wands and
         // presents it on the screen
         else {
             query2 = `SELECT * FROM Wands;`;
@@ -194,7 +225,7 @@ app.post("/add-customer-ajax", function (req, res) {
             res.sendStatus(400);
         }
 
-        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Customers and
         // presents it on the screen
         else {
             query2 = `SELECT * FROM Customers;`;
@@ -258,7 +289,7 @@ app.put("/put-customer-ajax", function (req, res, next) {
                 res.sendStatus(400);
             }
 
-            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // If there was no error, we run our second query and return that data so we can use it to update the Customer
             // table on the front-end
             else {
                 // Run the second query
@@ -284,11 +315,6 @@ app.get("/spells", function (req, res) {
     // If there is no query string, we just perform a basic SELECT
     if (req.query.name === undefined) {
         query1 = "SELECT * FROM `Spells`;";
-    }
-
-    // If there is a query string, we assume this is a search, and return desired results
-    else {
-        query1 = `SELECT * FROM Spells WHERE name LIKE "${req.query.name}%"`;
     }
 
     // Run the 1st query
@@ -389,13 +415,13 @@ app.get("/orders", function (req, res) {
      // Run the 1st query
      db.pool.query(query1, function(error, rows, fields){
 
-         // Save the people
+         // Save the orders
          let orders = rows;
 
          // Run the second query
          db.pool.query(query2, (error, rows, fields) => {
 
-             // Save the planets
+             // Save the customers
              let customers = rows;
 
              return res.render('orders', {data: orders, customers: customers});
@@ -419,7 +445,7 @@ app.post("/add-order-ajax", function (req, res) {
             res.sendStatus(400);
         }
 
-        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Orders and
         // presents it on the screen
         else {
             query2 = `SELECT * FROM Orders;`;
@@ -481,7 +507,7 @@ app.put("/put-order-ajax", function (req, res, next) {
                 res.sendStatus(400);
             }
 
-            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // If there was no error, we run our second query and return that data so we can use it to update the Order
             // table on the front-end
             else {
                 // Run the second query
@@ -498,6 +524,8 @@ app.put("/put-order-ajax", function (req, res, next) {
     );
 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 app.get("/order-items", function (req, res) {
      // Declare Query 1
 
@@ -506,32 +534,36 @@ app.get("/order-items", function (req, res) {
      // Query 2 is the same in both cases
      let query2 = "SELECT * FROM Orders;";
 
+     // Query 3 is the same in both cases
      let query3 = "SELECT * FROM Wands;";
 
+     // Query 4 is the same in both cases
      let query4 = "SELECT * FROM Spells;";
 
      // Run the 1st query
      db.pool.query(query1, function(error, rows, fields){
 
-        // Save OrderItems
+        // Save the OrderItems
         let orderItems = rows;
 
-        // Run the 2nd query (Orders)
+        // Run the second query
         db.pool.query(query2, function(error, rows, fields){
 
+            // Save the orders
             let orders = rows;
 
-            // Run the 3rd query (Wands)
+            // Run the third query
             db.pool.query(query3, function(error, rows, fields) {
 
+                // Save the wands (can be null)
                 let wands = [null,...rows];
 
-                // Run the 4th query (Spells)
+                // Run the fourth query
                 db.pool.query(query4, function(error, rows, fields) {
 
+                    // Save the spells (can be null)
                     let spells = [null,...rows];
 
-                    // Render the 'orderItems' view with all the data
                     return res.render('orderItems', {data: orderItems, orders: orders, wands: wands, spells: spells});
                 });
             });
@@ -553,7 +585,7 @@ app.post("/add-orderItem-ajax", function (req, res) {
             res.sendStatus(400);
         }
 
-        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM OrderItems and
         // presents it on the screen
         else {
             query2 = `SELECT * FROM OrderItems;`;
@@ -619,7 +651,7 @@ app.put("/put-orderItem-ajax", function (req, res, next) {
                 res.sendStatus(400);
             }
 
-            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // If there was no error, we run our second query and return that data so we can use it to update the orderItem's
             // table on the front-end
             else {
                 // Run the second query

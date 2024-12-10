@@ -1,10 +1,10 @@
 //  Citation for this code structure.
- 
+
 //  Date: 12/8/2024
- 
+
 //  Adapted from CS 340 nodejs-starter-app, step 8, update_person.js
 //  values and data changes were made to adapt the website's theme
- 
+
 //  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
 // Get the objects we need to modify
@@ -39,10 +39,6 @@ updateOrderItemForm.addEventListener("submit", function (e) {
     if (spellIDValue === '') {
         spellIDValue = null;
     }
-
-    // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
-
 
     // Put our data we want to send in a javascript object
     let data = {
@@ -98,10 +94,10 @@ function updateRow(data, orderItemID){
        //rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == orderItemID) {
 
-            // Get the location of the row where we found the matching person ID
+            // Get the location of the row where we found the matching orderItem ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
+            // Get td of orderItem value
             let tds = updateRowIndex.getElementsByTagName("td");
 
             // Update all fields
