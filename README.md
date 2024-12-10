@@ -1,5 +1,7 @@
 # Magic Wares
 
+![Customers Page](public/css/MagicWares.png | width=200)
+
 A database to track exercises using [MySQL], [Handlebars], and [Node.js] to do CRUD operations.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
