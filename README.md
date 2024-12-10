@@ -1,6 +1,6 @@
 # Magic Wares
 
-![Customers Page](public/css/MagicWares.png)
+![Customers Page](public/css/MagicWares.PNG)
 
 A database to track exercises using [MySQL], [Handlebars], and [Node.js] to do CRUD operations.
 
