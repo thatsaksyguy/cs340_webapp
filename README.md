@@ -36,4 +36,5 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## source citations
-All code is based on the CS 340 starter code, with the exception of the navigatin bar, the custom styling of all the html elements. 
+A majority of the code is based on the CS 340 starter code, with the exception of the navigation bar, the custom styling of all the html elements which were done by us.
+The code for the overlay was adapted from w3schools.com
