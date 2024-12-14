@@ -2,7 +2,7 @@
 
 <img src="public/css/MagicWares.PNG" alt="Customers Page" width="600" />
 
-A database to track exercises using [MySQL], [Handlebars], and [Node.js] to do CRUD operations.
+A database for a fictional company that uses [MySQL], [Handlebars], and [Node.js] to do CRUD operations.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
